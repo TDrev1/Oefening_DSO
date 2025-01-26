@@ -6,20 +6,23 @@ on: [push]
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
       - name: Install dependencies
         image: node:18
-        commands:
-          - npm install
+        runs: |
+          npm install
     
-      - name: Test
+      - name: Run tests
         image: node:18
-        commands:
-          - npm test
+        runs: |
+          npm test
     
       - name: Deploy
         image: node:18
-        commands:
-          - ssh gitea@192.168.178.51 "cd /home/gitea/Downloads/data/ && git pull && npm install && pm2 restart app"
+        runs: |
+          ssh gitea@192.168.178.51 "cd /home/gitea/Downloads/data/ && git pull && npm install && pm2 restart app"
