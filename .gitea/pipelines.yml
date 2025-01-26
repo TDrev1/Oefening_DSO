@@ -1,0 +1,17 @@
+# .gitea/pipelines.yml
+version: "1"
+steps:
+  - name: Install dependencies
+    image: node:18
+    commands:
+      - npm install
+
+  - name: Test
+    image: node:18
+    commands:
+      - npm test
+
+  - name: Deploy
+    image: node:18
+    commands:
+      - ssh gitea@192.168.178.51 "cd /path/to/deployment && git pull && npm install && pm2 restart app"
