@@ -1,17 +1,25 @@
 # .gitea/pipelines.yml
 version: "1"
-steps:
-  - name: Install dependencies
-    image: node:18
-    commands:
-      - npm install
+name: Gitea Actions Demo
+run-name: ${{ gitea.actor }} is testing out Gitea Actions
+on: [push]
 
-  - name: Test
-    image: node:18
-    commands:
-      - npm test
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-22.04
 
-  - name: Deploy
-    image: node:18
-    commands:
-      - ssh gitea@192.168.178.51 "cd /home/gitea/Downloads/data/ && git pull && npm install && pm2 restart app"
+    steps:
+      - name: Install dependencies
+        image: node:18
+        commands:
+          - npm install
+    
+      - name: Test
+        image: node:18
+        commands:
+          - npm test
+    
+      - name: Deploy
+        image: node:18
+        commands:
+          - ssh gitea@192.168.178.51 "cd /home/gitea/Downloads/data/ && git pull && npm install && pm2 restart app"
